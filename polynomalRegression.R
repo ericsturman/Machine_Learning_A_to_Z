@@ -15,4 +15,13 @@ dataset = read.csv('Position_Salaries.csv')
 # training_set = scale(training_set)
 # test_set = scale(test_set)
 
-dataset[4:6] <- data.frame(sq = dataset$Level ^ 2, cu = dataset$Level ^ 3, qu = dataset$Level ^ 4)
+getFrame <- function(num){
+  return(data.frame(Level=num, sq=num^2, cu=num^3, qu=num^4))
+}
+
+dataset<-dataset[3:2]
+dataset[3:5] <- data.frame(sq = dataset$Level ^ 2, cu = dataset$Level ^ 3, qu = dataset$Level ^ 4)
+regressor <- lm(formula = Salary ~ Level + sq + cu + qu, data = dataset)
+summary(regressor)
+
+predict(regressor, getFrame(6.5))
