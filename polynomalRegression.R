@@ -25,3 +25,10 @@ regressor <- lm(formula = Salary ~ Level + sq + cu + qu, data = dataset)
 summary(regressor)
 
 predict(regressor, getFrame(6.5))
+
+library(ggplot2)
+ggplot() + geom_point(aes(x=dataset$Level, y=dataset$Salary)) +
+geom_line(aes(x=dataset$Level, y=predict(regressor, getFrame(dataset$Level))), col='blue') +
+  ggtitle("truth or bluff") + 
+  xlab("Level") +
+  ylab("Salary")
