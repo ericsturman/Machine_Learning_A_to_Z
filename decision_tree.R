@@ -15,10 +15,9 @@ dataset = read.csv('Position_Salaries.csv')
 # training_set = scale(training_set)
 # test_set = scale(test_set)
 
-#install.packages("e1071")
-library(e1071)
-dataset<-dataset[3:2]
-regressor <- svm(formula = Salary ~ Level, data = dataset, type='eps-regression')
+install.packages("rpart")
+library(rpart)
+regressor <- rpart(formula = Salary ~ Level, data = dataset)
 summary(regressor)
 
 predict(regressor, data.frame(Level=6.5))
@@ -28,6 +27,6 @@ fineRange <- seq(min(dataset$Level), max(dataset$Level), by=(max(dataset$Level)-
 library(ggplot2)
 ggplot() + geom_point(aes(x=dataset$Level, y=dataset$Salary)) +
 geom_line(aes(x=fineRange, y=predict(regressor, data.frame(Level=fineRange))), col='blue') +
-  ggtitle("truth or bluff") + 
+  ggtitle("truth or bluff decision tree") + 
   xlab("Level") +
   ylab("Salary")
