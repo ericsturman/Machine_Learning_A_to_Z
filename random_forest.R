@@ -15,9 +15,11 @@ dataset = read.csv('Position_Salaries.csv')
 # training_set = scale(training_set)
 # test_set = scale(test_set)
 
-#install.packages("rpart")
-library(rpart)
-regressor <- rpart(formula = Salary ~ Level, data = dataset, control = rpart.control(minsplit = 1))
+#install.packages("randomForest")
+library(randomForest)
+#regressor <- randomForest(formula = Salary ~ Level, data = dataset, ntree=100)  #this line and line befor are identical...
+regressor <- randomForest(x = data.frame(Level = dataset$Level), y=dataset$Salary, data = dataset, ntree=100)
+
 summary(regressor)
 
 predict(regressor, data.frame(Level=6.5))
@@ -27,6 +29,6 @@ fineRange <- seq(min(dataset$Level), max(dataset$Level), by=(max(dataset$Level)-
 library(ggplot2)
 ggplot() + geom_point(aes(x=dataset$Level, y=dataset$Salary)) +
 geom_line(aes(x=fineRange, y=predict(regressor, data.frame(Level=fineRange))), col='blue') +
-  ggtitle("truth or bluff decision tree") + 
+  ggtitle("truth or bluff random forest") + 
   xlab("Level") +
   ylab("Salary")
